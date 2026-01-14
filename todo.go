@@ -22,13 +22,13 @@ func addTask(tasks []Task, text string) []Task {
 }
 func listTask(tasks []Task) {
 	if len(tasks) == 0 {
-		fmt.Println("Nenhuma tarefa encontrada.")
+		fmt.Println("No tasks found.")
 	}
-	fmt.Println("Lista de Tarefas:")
+	fmt.Println("\033[1;34m============== ALL TASKS ==============\033[0m")
 	for i, tasks := range tasks {
-		status := "[Pendente]" //pendente
+		status := "[Pending]" //pendente
 		if tasks.Done {
-			status = "[Concluída]" //concluída
+			status = "[Completed]" //concluída
 		}
 		fmt.Printf("%s | %d - %s \n", status, i+1, tasks.Text)
 	}
@@ -36,11 +36,11 @@ func listTask(tasks []Task) {
 func removeTask(tasks []Task, index string) []Task {
 	num, err := strconv.Atoi(index)
 	if err != nil {
-		fmt.Println("digite um número válido")
+		fmt.Println("Enter a valid number")
 	}
 	num = num - 1
 	if num < 0 || num >= len(tasks) {
-		fmt.Println("Índice Inválido")
+		fmt.Println("Invalid number")
 		return tasks
 	}
 	return append(tasks[:num], tasks[num+1:]...)
@@ -48,11 +48,11 @@ func removeTask(tasks []Task, index string) []Task {
 func completeTask(tasks []Task, index string) []Task {
 	num, err := strconv.Atoi(index)
 	if err != nil {
-		fmt.Println("digite um número válido")
+		fmt.Println("enter a valid number")
 	}
 	num = num - 1
 	if num < 0 || num >= len(tasks) {
-		fmt.Println("Índice Inválido")
+		fmt.Println("invalid number")
 		return tasks
 	}
 	tasks[num].Done = true
@@ -66,36 +66,36 @@ func main() {
 	var running bool = true
 	for running == true {
 		fmt.Println("\033[1;34m============== TODO LIST ==============\033[0m")
-		fmt.Println("1 | Adicionar Tarefa")
-		fmt.Println("2 | Listar Tarefas")
-		fmt.Println("3 | Marcar Tarefa como Concluída")
-		fmt.Println("4 | Remover Tarefa da Lista")
-		fmt.Println("0 | Sair")
-		fmt.Print("Escolha uma opção: ")
+		fmt.Println("1 | Add Task")
+		fmt.Println("2 | List Tasks")
+		fmt.Println("3 | Mark task as Completed")
+		fmt.Println("4 | Remove Task")
+		fmt.Println("0 | Exit")
+		fmt.Print("Choose an option: ")
 		input, _ := reader.ReadString('\n')
 		input = strings.TrimSpace(input)
 		switch input {
 		case "1":
-			fmt.Print("Digite a tarefa: ")
+			fmt.Print("Enter Task: ")
 			text, _ := reader.ReadString('\n')
 			text = strings.TrimSpace(text)
 			tasks = addTask(tasks, text)
-			fmt.Println("Tarefa adicionada!")
+			fmt.Println("Task Added!")
 		case "2":
 			listTask(tasks)
 		case "3":
-			fmt.Println("Qual tarefa será concluída?")
+			fmt.Println("Which task number to mark as completed?")
 			index, _ := reader.ReadString('\n')
 			index = strings.TrimSpace(index)
 			tasks = completeTask(tasks, index)
 
 		case "4":
-			fmt.Println("Qual item será removido?")
+			fmt.Println("Which task number to remove?")
 			index, _ := reader.ReadString('\n')
 			index = strings.TrimSpace(index)
 
 			tasks = removeTask(tasks, index)
-			fmt.Println("Tarefa Removida")
+			fmt.Println("Task Removed")
 		case "0":
 			running = false
 		default:
